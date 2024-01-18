@@ -35,17 +35,19 @@ const NumberForm = () => {
     e.preventDefault();
 
 if(ammonia !== '' && date !== ''){
-    if (ammonia !== '') {
-      setAmmoniaLevels([...ammoniaLevels, ammonia]);
-    }
-    if (date !== '') {
-      setDates([...dates, date]);
-    }     
-
+    setAmmoniaLevels([...ammoniaLevels, ammonia]);
+    setDates([...dates, date]);
     setCombinedData([...combinedData, {
-      testedDate: date,
+    testedDate: date,
       ammoniaLevel: ammonia
     }])
+    function clearButtons (){
+      setAmmonia('')
+      setDate('')
+    }
+    clearButtons()
+
+
   }else alert("Date and Ammonia Levels must be inputted");
 
   }; 
@@ -57,7 +59,7 @@ if(ammonia !== '' && date !== ''){
         <label>
 Ammonia in PPM 
         <input
-            type="Text"
+            type="number"
             value={ammonia}
             onChange={(e) => setAmmonia(e.target.value)}
           />
