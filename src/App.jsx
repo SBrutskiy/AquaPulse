@@ -4,11 +4,10 @@ import React, { useState, useEffect } from 'react';
 
 
 const NumberForm = () => {
+  const [isVisible, setIsVisible] = useState(false);
   const [nitrite, setNitrite] = useState('')
   const [ammonia, setAmmonia] = useState('');
   const [date, setDate] = useState('');
-  const [ammoniaLevels, setAmmoniaLevels] = useState([]);
-  const [dates, setDates] = useState([]);
   const [combinedData, setCombinedData] = useState([...ImportedData])
 
   const [userData, setUserData] = useState({
@@ -48,17 +47,18 @@ const NumberForm = () => {
         });
       }, [combinedData]);
       
+      const handleButtonClick = () => {
+        setIsVisible(true);
+      };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
 if(ammonia || nitrite && date){
-    setAmmoniaLevels([...ammoniaLevels, ammonia]);
-    setDates([...dates, date]);
     setCombinedData([...combinedData, {
       testedDate: date,
-      ammoniaLevel: ammonia,
-      nitriteLevel: nitrite
+      ammoniaLevel: ammonia||undefined,
+      nitriteLevel: nitrite||undefined
 
     }])
     function clearButtons (){
@@ -67,7 +67,7 @@ if(ammonia || nitrite && date){
       setNitrite('')
     }
     clearButtons()
-
+    setIsVisible(false)
 
   }else alert("Date and Ammonia or Nitrite Levels must be inputted");
 
@@ -75,7 +75,12 @@ if(ammonia || nitrite && date){
   return (
     <div>
       <LineChart chartData={userData}/>
-     
+      {!isVisible && ( 
+      <button onClick={handleButtonClick}>Add Data</button>)
+      }
+      {isVisible && (<div>
+      <button onClick={()=>{setIsVisible(false)
+}}>Back</button>
       <form onSubmit={handleSubmit}>
         <label>
 Ammonia in PPM 
@@ -106,6 +111,8 @@ Date Checked
         <br />
         <button type="submit">Graph Data</button>
       </form>
+      </div>
+         )}
     </div>
   );
 };
